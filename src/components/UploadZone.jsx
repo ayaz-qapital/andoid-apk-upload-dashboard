@@ -27,16 +27,20 @@ const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
       status: 'uploading',
       progress: 0,
       appUrl: null,
-      error: null
+      error: null,
+      statusMessage: 'Preparing upload...'
     }
     
     onUpload(initialUpload)
     toast.loading(`Uploading ${file.name}...`, { id: uploadId })
 
     try {
-      // Upload to BrowserStack
-      const result = await uploadToBrowserStack(file, (progress) => {
-        onUpdateUpload(uploadId, { progress })
+      // Upload to BrowserStack (with Cloudinary for large files)
+      const result = await uploadToBrowserStack(file, (progress, message) => {
+        onUpdateUpload(uploadId, { 
+          progress,
+          statusMessage: message || 'Uploading...'
+        })
       })
 
       // Update with success
@@ -44,7 +48,9 @@ const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
         status: 'completed',
         progress: 100,
         appUrl: result.app_url,
-        browserStackId: result.app_id
+        browserStackId: result.app_id,
+        cloudinaryUrl: result.cloudinary_url,
+        statusMessage: 'Upload completed successfully!'
       })
 
       toast.success(`Upload completed! App URL: ${result.app_url}`, { id: uploadId })
@@ -52,7 +58,8 @@ const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
       console.error('Upload failed:', error)
       onUpdateUpload(uploadId, {
         status: 'failed',
-        error: error.message
+        error: error.message,
+        statusMessage: 'Upload failed'
       })
       toast.error(`Upload failed: ${error.message}`, { id: uploadId })
     } finally {

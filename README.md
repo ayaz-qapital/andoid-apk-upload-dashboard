@@ -19,13 +19,60 @@ A modern React dashboard for uploading APK files to BrowserStack and managing ap
 npm install
 ```
 
-### 2. Start Development Server
+### 2. Configure Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+# BrowserStack Configuration
+VITE_BROWSERSTACK_USERNAME=your_browserstack_username
+VITE_BROWSERSTACK_ACCESS_KEY=your_browserstack_access_key
+
+# Cloudinary Configuration (for large files >50MB)
+VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
+VITE_CLOUDINARY_API_KEY=your_api_key
+VITE_CLOUDINARY_UPLOAD_PRESET=apk_uploads
+```
+
+### 3. Set up Cloudinary Upload Preset
+
+1. Go to [Cloudinary Console](https://cloudinary.com/console)
+2. Navigate to Settings → Upload
+3. Create an unsigned upload preset named `apk_uploads`
+4. Set resource type to "Raw" for APK files
+5. Configure folder as `apk-uploads`
+
+### 4. Start Development Server
 
 ```bash
 npm run dev
 ```
 
 The application will open at `http://localhost:3000`.
+
+## Deployment to Vercel
+
+### 1. Install Vercel CLI
+
+```bash
+npm install -g vercel
+```
+
+### 2. Deploy to Vercel
+
+```bash
+vercel
+```
+
+### 3. Configure Environment Variables in Vercel
+
+In your Vercel dashboard, add these environment variables:
+
+- `VITE_BROWSERSTACK_USERNAME`
+- `VITE_BROWSERSTACK_ACCESS_KEY`
+- `VITE_CLOUDINARY_CLOUD_NAME`
+- `VITE_CLOUDINARY_API_KEY`
+- `VITE_CLOUDINARY_UPLOAD_PRESET`
 
 ## Usage
 

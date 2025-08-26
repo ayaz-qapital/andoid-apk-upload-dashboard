@@ -105,7 +105,7 @@ const Dashboard = ({ uploads, onDelete, onUpdate }) => {
                 {upload.status === 'uploading' && (
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Uploading...</span>
+                      <span className="text-gray-600">{upload.statusMessage || 'Uploading...'}</span>
                       <span className="font-medium">{upload.progress}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
