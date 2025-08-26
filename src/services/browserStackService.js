@@ -63,55 +63,6 @@ export const uploadToBrowserStack = async (file, onProgress) => {
   }
 }
 
-// Upload APK from Cloudinary URL to BrowserStack
-export const uploadToBrowserStackFromUrl = async (cloudinaryUrl, onProgress) => {
-  const username = import.meta.env.VITE_BROWSERSTACK_USERNAME
-  const accessKey = import.meta.env.VITE_BROWSERSTACK_ACCESS_KEY
-
-  if (!username || !accessKey) {
-    throw new Error('BrowserStack credentials not configured.')
-  }
-
-  try {
-    onProgress(10)
-    
-    const response = await axios.post(BROWSERSTACK_API_URL, {
-      url: cloudinaryUrl
-    }, {
-      auth: {
-        username: username,
-        password: accessKey
-      },
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-
-    onProgress(100)
-
-    if (response.data && response.data.app_url) {
-      return {
-        app_url: response.data.app_url,
-        app_id: response.data.app_id || response.data.hashed_id,
-        success: true
-      }
-    } else {
-      throw new Error('Invalid response from BrowserStack API')
-    }
-  } catch (error) {
-    console.error('BrowserStack URL upload error:', error)
-    
-    if (error.response) {
-      const errorMessage = error.response.data?.error || error.response.data?.message || `HTTP ${error.response.status}: ${error.response.statusText}`
-      throw new Error(`BrowserStack API Error: ${errorMessage}`)
-    } else if (error.request) {
-      throw new Error('Network error: Unable to reach BrowserStack API')
-    } else {
-      throw new Error(error.message || 'Unknown error occurred during upload')
-    }
-  }
-}
-
 // Utility function to validate APK file
 export const validateApkFile = (file) => {
   const maxSize = 100 * 1024 * 1024 // 100MB

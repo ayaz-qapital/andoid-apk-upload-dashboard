@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { Upload, FileText, AlertCircle, CheckCircle, Cloud } from 'lucide-react'
+import { Upload, FileText, AlertCircle, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { uploadToBrowserStackFromUrl } from '../services/browserStackService'
-import { uploadToCloudinary } from '../services/cloudinaryService'
+import { uploadToBrowserStack } from '../services/browserStackService'
 
 const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
   const [dragActive, setDragActive] = useState(false)
@@ -28,44 +27,27 @@ const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
       status: 'uploading',
       progress: 0,
       appUrl: null,
-      cloudinaryUrl: null,
       error: null
     }
     
     onUpload(initialUpload)
-    toast.loading(`Uploading ${file.name} to Cloudinary...`, { id: uploadId })
+    toast.loading(`Uploading ${file.name}...`, { id: uploadId })
 
     try {
-      // Step 1: Upload to Cloudinary first
-      onUpdateUpload(uploadId, { status: 'uploading-cloudinary', progress: 0 })
-      
-      const cloudinaryResult = await uploadToCloudinary(file, (progress) => {
-        onUpdateUpload(uploadId, { progress: Math.round(progress * 0.7) }) // 70% for Cloudinary
-      })
-
-      onUpdateUpload(uploadId, { 
-        cloudinaryUrl: cloudinaryResult.url,
-        progress: 70
-      })
-
-      toast.loading(`Uploading to BrowserStack...`, { id: uploadId })
-
-      // Step 2: Upload to BrowserStack from Cloudinary URL
-      onUpdateUpload(uploadId, { status: 'uploading-browserstack' })
-      
-      const browserStackResult = await uploadToBrowserStackFromUrl(cloudinaryResult.url, (progress) => {
-        onUpdateUpload(uploadId, { progress: 70 + Math.round(progress * 0.3) }) // 30% for BrowserStack
+      // Upload to BrowserStack
+      const result = await uploadToBrowserStack(file, (progress) => {
+        onUpdateUpload(uploadId, { progress })
       })
 
       // Update with success
       onUpdateUpload(uploadId, {
         status: 'completed',
         progress: 100,
-        appUrl: browserStackResult.app_url,
-        browserStackId: browserStackResult.app_id
+        appUrl: result.app_url,
+        browserStackId: result.app_id
       })
 
-      toast.success(`Upload completed! App URL: ${browserStackResult.app_url}`, { id: uploadId })
+      toast.success(`Upload completed! App URL: ${result.app_url}`, { id: uploadId })
     } catch (error) {
       console.error('Upload failed:', error)
       onUpdateUpload(uploadId, {
@@ -131,10 +113,10 @@ const UploadZone = ({ onUpload, onUpdateUpload, isLoading, setIsLoading }) => {
       
       <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
         <div className="flex items-start space-x-2">
-          <Cloud className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+          <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
           <div className="text-sm text-blue-800">
-            <p className="font-medium">Cloudinary + BrowserStack Integration</p>
-            <p>Large APK files are uploaded to Cloudinary first, then processed by BrowserStack for app URL generation.</p>
+            <p className="font-medium">BrowserStack Integration</p>
+            <p>Your APK will be uploaded to BrowserStack and you'll receive an app URL for automated testing.</p>
           </div>
         </div>
       </div>

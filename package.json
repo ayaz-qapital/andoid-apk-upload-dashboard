@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -16,8 +17,7 @@
     "react-dropzone": "^14.2.3",
     "lucide-react": "^0.263.1",
     "axios": "^1.4.0",
-    "react-hot-toast": "^2.4.1",
-    "cloudinary": "^1.41.0"
+    "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
