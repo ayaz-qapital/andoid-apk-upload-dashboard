@@ -4,17 +4,6 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "devCommand": "npm run dev",
-  "env": {
-    "VITE_BROWSERSTACK_USERNAME": "@browserstack-username",
-    "VITE_BROWSERSTACK_ACCESS_KEY": "@browserstack-access-key",
-    "VITE_CLOUDINARY_CLOUD_NAME": "@cloudinary-cloud-name",
-    "VITE_CLOUDINARY_UPLOAD_PRESET": "@cloudinary-upload-preset"
-  },
-  "functions": {
-    "src/api/*.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
