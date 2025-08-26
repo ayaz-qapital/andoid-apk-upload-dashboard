@@ -105,7 +105,7 @@ const Dashboard = ({ uploads, onDelete, onUpdate }) => {
                 {upload.status === 'uploading' && (
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{upload.statusMessage || 'Uploading...'}</span>
+                      <span className="text-gray-600">Uploading...</span>
                       <span className="font-medium">{upload.progress}%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -117,19 +117,40 @@ const Dashboard = ({ uploads, onDelete, onUpdate }) => {
                   </div>
                 )}
 
+                {/* Cloudinary URL */}
+                {upload.cloudinaryUrl && (
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-blue-800 mb-1">Cloudinary Storage</p>
+                        <p className="font-mono text-xs text-blue-700 break-all">{upload.cloudinaryUrl}</p>
+                      </div>
+                      <div className="flex space-x-2 ml-4">
+                        <button
+                          onClick={() => copyToClipboard(upload.cloudinaryUrl)}
+                          className="p-2 text-blue-600 hover:text-blue-800 hover:bg-blue-100 rounded-lg transition-colors"
+                          title="Copy Cloudinary URL"
+                        >
+                          <Copy className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* App URL */}
                 {upload.appUrl && (
                   <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-green-800 mb-1">App URL Ready</p>
+                        <p className="text-sm font-medium text-green-800 mb-1">BrowserStack App URL</p>
                         <p className="font-mono text-sm text-green-700 break-all">{upload.appUrl}</p>
                       </div>
                       <div className="flex space-x-2 ml-4">
                         <button
                           onClick={() => copyToClipboard(upload.appUrl)}
                           className="p-2 text-green-600 hover:text-green-800 hover:bg-green-100 rounded-lg transition-colors"
-                          title="Copy URL"
+                          title="Copy App URL"
                         >
                           <Copy className="h-4 w-4" />
                         </button>

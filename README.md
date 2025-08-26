@@ -4,51 +4,12 @@ A modern React dashboard for uploading APK files to BrowserStack and managing ap
 
 ## Features
 
-- 🚀 **Drag & Drop Upload**: Modern file upload interface with drag and drop support
-- 📱 **BrowserStack Integration**: Direct API integration for APK uploads
-- 📊 **Real-time Dashboard**: Track upload progress and manage app URLs
+- 🚀 **Drag & Drop Upload**: Modern file upload interface
+- ☁️ **Cloudinary Integration**: Handles large APK files (>50MB)
+- 📱 **BrowserStack Integration**: Direct API integration for app URLs
+- 📊 **Real-time Dashboard**: Track upload progress and manage URLs
 - 🎨 **Modern UI**: Beautiful, responsive design with Tailwind CSS
 - 📋 **Upload History**: Persistent storage of upload records
-- 🔗 **Quick Actions**: Copy app URLs and manage uploads easily
-
-## Setup Instructions
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Configure Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# BrowserStack Configuration
-VITE_BROWSERSTACK_USERNAME=your_browserstack_username
-VITE_BROWSERSTACK_ACCESS_KEY=your_browserstack_access_key
-
-# Cloudinary Configuration (for large files >50MB)
-VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-VITE_CLOUDINARY_API_KEY=your_api_key
-VITE_CLOUDINARY_UPLOAD_PRESET=apk_uploads
-```
-
-### 3. Set up Cloudinary Upload Preset
-
-1. Go to [Cloudinary Console](https://cloudinary.com/console)
-2. Navigate to Settings → Upload
-3. Create an unsigned upload preset named `apk_uploads`
-4. Set resource type to "Raw" for APK files
-5. Configure folder as `apk-uploads`
-
-### 4. Start Development Server
-
-```bash
-npm run dev
-```
-
-The application will open at `http://localhost:3000`.
 
 ## Deployment to Vercel
 
@@ -58,28 +19,65 @@ The application will open at `http://localhost:3000`.
 npm install -g vercel
 ```
 
-### 2. Deploy to Vercel
+### 2. Login to Vercel
 
 ```bash
-vercel
+vercel login
 ```
 
-### 3. Configure Environment Variables in Vercel
+### 3. Deploy
 
-In your Vercel dashboard, add these environment variables:
+```bash
+vercel --prod
+```
 
-- `VITE_BROWSERSTACK_USERNAME`
-- `VITE_BROWSERSTACK_ACCESS_KEY`
-- `VITE_CLOUDINARY_CLOUD_NAME`
-- `VITE_CLOUDINARY_API_KEY`
-- `VITE_CLOUDINARY_UPLOAD_PRESET`
+### 4. Set Environment Variables in Vercel Dashboard
+
+Go to your Vercel project dashboard and add these environment variables:
+
+```
+VITE_BROWSERSTACK_USERNAME=ayazmahmood_U5cIfM
+VITE_BROWSERSTACK_ACCESS_KEY=5oMaz1Dq2VCvdnnd8jY3
+VITE_CLOUDINARY_CLOUD_NAME=dacjgkgn9
+VITE_CLOUDINARY_UPLOAD_PRESET=apk_uploads
+```
+
+## Cloudinary Setup
+
+1. Create a Cloudinary account at https://cloudinary.com
+2. Go to Settings > Upload presets
+3. Create a new unsigned upload preset named `apk_uploads`
+4. Set Mode to "Unsigned" and Resource Type to "Auto"
+
+## Local Development
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Create Environment File
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your credentials.
+
+### 3. Start Development Server
+
+```bash
+npm run dev
+```
 
 ## Usage
 
 1. **Upload APK**: Drag and drop your APK file or click to browse
-2. **Monitor Progress**: Watch real-time upload progress
-3. **Get App URL**: Copy the generated BrowserStack app URL
-4. **Use in Tests**: Use the app URL in your WebDriverIO/Appium tests
+2. **Cloudinary Upload**: Large files are uploaded to Cloudinary first
+3. **BrowserStack Processing**: Cloudinary URL is sent to BrowserStack
+4. **Get App URL**: Copy the generated BrowserStack app URL
+5. **Use in Tests**: Use the app URL in your WebDriverIO/Appium tests
 
 ### Example WebDriverIO Usage
 

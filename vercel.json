@@ -5,34 +5,20 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "env": {
-    "VITE_BROWSERSTACK_USERNAME": "@browserstack_username",
-    "VITE_BROWSERSTACK_ACCESS_KEY": "@browserstack_access_key",
-    "VITE_CLOUDINARY_CLOUD_NAME": "@cloudinary_cloud_name",
-    "VITE_CLOUDINARY_API_KEY": "@cloudinary_api_key",
-    "VITE_CLOUDINARY_UPLOAD_PRESET": "@cloudinary_upload_preset"
+    "VITE_BROWSERSTACK_USERNAME": "@browserstack-username",
+    "VITE_BROWSERSTACK_ACCESS_KEY": "@browserstack-access-key",
+    "VITE_CLOUDINARY_CLOUD_NAME": "@cloudinary-cloud-name",
+    "VITE_CLOUDINARY_UPLOAD_PRESET": "@cloudinary-upload-preset"
   },
   "functions": {
-    "app/api/**/*.js": {
-      "maxDuration": 30
+    "src/api/*.js": {
+      "runtime": "nodejs18.x"
     }
   },
-  "headers": [
+  "rewrites": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET, POST, PUT, DELETE, OPTIONS"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Content-Type, Authorization"
-        }
-      ]
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
